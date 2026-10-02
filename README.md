@@ -1,10 +1,10 @@
 # SAARTHI — India-wide Disaster Command Center
 
 Streamlit hackathon prototype for location-based disaster intelligence across India.
-Made by the team CODE BLOODED by
+Made by the team CODE BLOODED:
 ->Ayush Jaiswal (https://github.com/AyushJaiswal419),
-->Madhuraa Chavan (maddyy2410https://github.com/maddyy2410),
-->Achintya Singh, 
+->Madhuraa Chavan (https://github.com/maddyy2410),
+->Achintya Singh (https://github.com/Achintya2409),
 ->Bhuvi Bhimani,
 
 ## Run
