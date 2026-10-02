@@ -2,9 +2,13 @@
 
 Streamlit hackathon prototype for location-based disaster intelligence across India.
 Made by the team CODE BLOODED:
-->Ayush Jaiswal (https://github.com/AyushJaiswal419),
+
+->Ayush Jaiswal (https://github.com/AyushJaiswal419),   
+
 ->Madhuraa Chavan (https://github.com/maddyy2410),
+
 ->Achintya Singh (https://github.com/Achintya2409),
+
 ->Bhuvi Bhimani,
 
 ## Run
