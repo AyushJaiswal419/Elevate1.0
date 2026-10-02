@@ -2,10 +2,10 @@
 
 Streamlit hackathon prototype for location-based disaster intelligence across India.
 Made by the team CODE BLOODED by
-Ayush Jaiswal (AyushJaiswal419)
-Madhuraa Chavan (maddyy2410)
-Achintya Singh 
-Bhuvi Bhimani
+->Ayush Jaiswal (AyushJaiswal419),
+->Madhuraa Chavan (maddyy2410),
+->Achintya Singh, 
+->Bhuvi Bhimani,
 
 ## Run
 ```bash
