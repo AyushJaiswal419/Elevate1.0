@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Saarthi · Disaster Intelligence Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="/static/styles.css"/>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brandmark">S</div><div><div class="brandname">SAARTHI</div><div class="brandtag">DISASTER INTELLIGENCE</div></div></div>
+    <div class="live"><span class="dot"></span><span>LIVE · SRINAGAR</span><span id="refreshAge">--</span></div>
+    <nav>
+      <button class="nav active" data-view="overview">⌂ <span>Overview</span></button>
+      <button class="nav" data-view="warnings">◈ <span>Early Warnings</span></button>
+      <button class="nav" data-view="vulnerability">◉ <span>Severity & Vulnerability</span></button>
+      <button class="nav" data-view="resources">▣ <span>Resource Allocation</span></button>
+      <button class="nav" data-view="tracking">↗ <span>Supply Tracking</span></button>
+      <button class="nav" data-view="field">⌁ <span>Field Requests</span></button>
+      <button class="nav" data-view="model">△ <span>Prediction Lab</span></button>
+    </nav>
+    <div class="sidebarBottom"><div class="mini">AUTO REFRESH <b>30s</b></div><button id="refreshBtn" class="outline">↻ Refresh now</button></div>
+  </aside>
+
+  <main>
+    <header class="topbar"><div><div class="eyebrow">NATIONAL DISASTER RESPONSE · DEMO</div><h1 id="pageTitle">Situation overview</h1></div><div class="headerActions"><span class="chip">● Model online</span><span class="chip muted" id="lastUpdate">Updated --</span></div></header>
+
+    <section id="overview" class="view active">
+      <div class="metrics">
+        <div class="metric"><span>CRITICAL ZONES</span><strong id="mCritical">--</strong><i>severity-ranked</i></div>
+        <div class="metric"><span>24H FLOOD RISK</span><strong id="mRisk">--%</strong><i>highest zone probability</i></div>
+        <div class="metric"><span>OPEN SOS</span><strong id="mSos">--</strong><i>field requests</i></div>
+        <div class="metric"><span>SHIPMENTS</span><strong id="mShip">--</strong><i>tracked movements</i></div>
+      </div>
+      <div class="grid mainGrid">
+        <div class="panel mapPanel"><div class="panelHead"><div><h2>Srinagar live risk map</h2><p>Flood probability · vulnerability · critical points · relief hubs</p></div><div class="legend"><span><b class="lg critical"></b>Critical</span><span><b class="lg high"></b>High</span><span><b class="lg moderate"></b>Moderate</span><span><b class="lg low"></b>Low</span></div></div><div id="map"></div></div>
+        <div class="panel"><div class="panelHead"><div><h2>Live event feed</h2><p>Latest engine decisions</p></div></div><div id="feed" class="feed"></div></div>
+      </div>
+      <div class="grid lower"><div class="panel"><div class="panelHead"><div><h2>24-hour prediction curve</h2><p>Demo forecast trajectory · auto-updated</p></div><span class="badge blue">RF MODEL</span></div><canvas id="riskChart"></canvas></div><div class="panel"><div class="panelHead"><div><h2>Priority zones</h2><p>Most severe first</p></div></div><div id="priority" class="table"></div></div></div>
+    </section>
+
+    <section id="warnings" class="view"><div class="sectionIntro"><h2>Early warnings</h2><p>24-hour anticipatory alerts with confidence and impact horizon.</p></div><div class="alertHero"><div><span class="badge red">NEAREST IMPACT · ACTION</span><h2 id="heroZone">--</h2><p id="heroText">--</p></div><div class="bigNum" id="heroProb">--%</div></div><div class="panel"><div class="panelHead"><h2>All active warnings</h2></div><div id="warningsTable" class="table"></div></div></section>
+
+    <section id="vulnerability" class="view"><div class="sectionIntro"><h2>Severity & vulnerability</h2><p>Severity combines predicted hazard probability, exposure vulnerability and field demand.</p></div><div class="panel"><div class="formula">SEVERITY = <b>24H PROBABILITY × VULNERABILITY</b> + SOS PRESSURE</div><div id="vulnTable" class="table"></div></div></section>
+
+    <section id="resources" class="view"><div class="sectionIntro"><h2>Resource allocation</h2><p>Pre-position supplies before impact. Recommendations change when zone severity or route availability changes.</p></div><div class="grid lower"><div class="panel"><div class="panelHead"><h2>Stock by hub</h2><span class="badge blue">LIVE INVENTORY</span></div><div id="stockTable" class="table"></div></div><div class="panel"><div class="panelHead"><h2>Engine recommendations</h2></div><div id="recs" class="table"></div></div></div></section>
+
+    <section id="tracking" class="view"><div class="sectionIntro"><h2>Supply tracking</h2><p>Every state transition is append-only and chained with SHA-256.</p></div><div class="ledgerBanner">✓ LEDGER INTEGRITY · <b>VERIFIED</b><span>New movements add records; previous records are never edited.</span></div><div class="panel"><div class="panelHead"><h2>Shipment ledger</h2><button class="smallBtn" onclick="demoLedger()">+ Add demo movement</button></div><div id="ledger" class="table"></div></div></section>
+
+    <section id="field" class="view"><div class="sectionIntro"><h2>Field requests</h2><p>SOS requests from teams, NGOs and responders.</p></div><div class="panel"><div id="fieldTable" class="table"></div></div></section>
+
+    <section id="model" class="view"><div class="sectionIntro"><h2>Prediction lab</h2><p>Stress-test the 24-hour model and show decision explainability to management personnel.</p></div><div class="grid lower"><div class="panel"><div class="panelHead"><h2>Scenario controls</h2><span class="badge blue">24H</span></div><label>24h forecast rain <input id="rainInput" type="range" min="0" max="300" value="72"><output id="rainOut">72 mm</output></label><label>River discharge percentile <input id="riverInput" type="range" min="0" max="100" value="78"><output id="riverOut">78%</output></label><label>Soil moisture <input id="soilInput" type="range" min="0" max="100" value="74"><output id="soilOut">74%</output></label><button id="simulate" class="primary">Run prediction</button></div><div class="panel result"><span class="eyebrow">MODEL OUTPUT</span><div class="modelCompare"><div><small>BASELINE</small><strong id="baseP">--%</strong></div><div>→</div><div><small>STRESSED</small><strong id="stressP">--%</strong></div></div><p id="deltaText">Adjust inputs and run a scenario.</p><div class="explain"><span>Why it moves</span><p>Rainfall forecast, accumulated rainfall, river discharge, soil moisture, elevation, slope, drainage density and exposure are combined by the model. The dashboard uses synthetic demo labels and must not be treated as an operational warning.</p></div></div></div></section>
+  </main>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="/static/app.js"></script>
+</body></html>
